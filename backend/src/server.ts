@@ -3,7 +3,6 @@ import cors from "cors";
 import connectDB from "./config/database";
 import dotenv from "dotenv";
 
-import authRoutes from "./routes/authRoutes";
 import leadRoutes from "./routes/leadRoutes";
 import agentRoutes from "./routes/agentRoutes";
 import analyticsRoutes from "./routes/analyticsRoutes";
@@ -33,7 +32,6 @@ app.get("/api/health", (req, res) => {
 //Routes
 const apiPrefix = process.env.API_PREFIX;
 
-app.use(`${apiPrefix}/auth`, authRoutes);
 app.use(`${apiPrefix}/leads`, leadRoutes);
 app.use(`${apiPrefix}/agents`, agentRoutes);
 app.use(`${apiPrefix}/analytics`, analyticsRoutes);
