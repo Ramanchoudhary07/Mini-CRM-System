@@ -2,10 +2,10 @@ export type LeadStatus = "New" | "Contacted" | "Converted" | "Lost";
 
 export interface LeadType {
   _id?: string;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone: number;
+  phone: string;
   status: LeadStatus;
   assignedTo?: string;
   createdAt?: Date;
