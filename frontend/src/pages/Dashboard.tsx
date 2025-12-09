@@ -14,7 +14,6 @@ const Dashboard = ({ leads, followups }: DashboardProps) => {
   const pendingFollowUps = followups.filter(
     (f) => !f.isCompleted && new Date(f.followUpDate) >= new Date()
   ).length;
-  const lostLeads = leads.filter((l) => l.status === "Lost").length;
 
   const stats = [
     {

@@ -1,18 +1,18 @@
 import { useState } from "react";
 import Sidebar from "./components/Sidebar";
-import Dashboard from "./components/Dashboard";
-import LeadManagement from "./components/LeadManagement";
-import Analytics from "./components/Analytics";
-import FollowUpManagement from "./components/FollowUpManagement";
+import Dashboard from "./pages/Dashboard";
+import LeadManagement from "./pages/LeadManagement";
+import Analytics from "./pages/Analytics";
+import FollowUpManagement from "./pages/FollowUpManagement";
 import type { AgentType, FollowUpType, LeadType } from "./types";
-import AgentManagement from "./components/AgentManagement";
+import AgentManagement from "./pages/AgentManagement";
 
 function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [leads, setLeads] = useState<LeadType[]>([]);
   const [agents, setAgents] = useState<AgentType[]>([]);
   const [followups, setFollowups] = useState<FollowUpType[]>([]);
-  const [selectedLeadId, setSelectedLeadId] = useState<LeadType | null>(null);
+  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
   const handleAddLead = (lead: LeadType) => {
     const newId = (leads.length + 1).toString();

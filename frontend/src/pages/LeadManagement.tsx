@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import type { AgentType, LeadStatus, LeadType } from "../types";
 import { useState } from "react";
-import AddLeadModal from "./AddLeadModal";
+import AddLeadModal from "../components/AddLeadModal";
 
 interface LeadManagementProps {
   leads: LeadType[];

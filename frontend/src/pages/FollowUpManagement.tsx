@@ -1,8 +1,8 @@
 import { useState } from "react";
 import type { FollowUpType, LeadType } from "../types";
 import { Calendar, CheckCircle, Plus } from "lucide-react";
-import AddFollowUpModal from "./AddFollowUpModal";
-import FollowUpList from "./FollowUpList";
+import AddFollowUpModal from "../components/AddFollowUpModal";
+import FollowUpList from "../components/FollowUpList";
 
 interface FollowUpManagementProps {
   followups: FollowUpType[];

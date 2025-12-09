@@ -1,7 +1,7 @@
-import { Building2, Edit2, Mail, Phone, Plus, Trash2 } from "lucide-react";
+import { Edit2, Mail, Phone, Plus, Trash2 } from "lucide-react";
 import type { AgentType } from "../types";
 import { useState } from "react";
-import AddAgentModal from "./AddAgentModal";
+import AddAgentModal from "../components/AddAgentModal";
 
 interface AgentManagementProps {
   agents: AgentType[];
