@@ -25,7 +25,7 @@ export interface FollowUpType {
   leadId: string;
   agentId: string;
   notes: string;
-  followUpDate: Date;
+  followUpDate: string;
   isCompleted: boolean;
 }
 
