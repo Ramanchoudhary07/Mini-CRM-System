@@ -33,19 +33,24 @@ const LeadManagement = () => {
     email: "",
     phone: "",
     status: "New" as LeadStatus,
-    assignedTo: agents[0]._id || "",
+    assignedTo: agents[0]?._id || "",
     notes: "",
   });
 
   const handleEdit = (lead: LeadType) => {
     setEditingLead(lead);
+    const agentId =
+      typeof lead.assignedTo === "string"
+        ? lead.assignedTo
+        : (lead.assignedTo as any)?._id || "";
+
     setFormData({
       firstName: lead.firstName,
       lastName: lead.lastName,
       email: lead.email,
       phone: lead.phone,
       status: lead.status,
-      assignedTo: lead.assignedTo,
+      assignedTo: agentId,
       notes: lead.notes,
     });
     setShowForm(true);
@@ -66,10 +71,6 @@ const LeadManagement = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("agents from LM", agents);
-    console.log("form data from LM", formData);
-    console.log("agents[0]:", agents[0]);
-
     e.preventDefault();
     if (editingLead) {
       await updateLead(editingLead._id!, formData);
@@ -178,7 +179,11 @@ const LeadManagement = () => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredLeads.map((lead) => {
-                const agent = agents.find((a) => a._id === lead.assignedTo);
+                const agentId =
+                  typeof lead.assignedTo === "string"
+                    ? lead.assignedTo
+                    : (lead.assignedTo as any)?._id || "";
+                const agent = agents.find((a) => a._id === agentId);
                 return (
                   <tr key={lead._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
