@@ -126,12 +126,8 @@ export const updateLead = async (
     const { id } = req.params;
     const { firstName, lastName, email, phone, status, assignedTo, notes } =
       req.body.lead;
-    console.log(req.body.lead);
-
-    console.log("controll reached here");
 
     const lead = await Lead.findById(id);
-    console.log(lead);
 
     if (!lead) {
       res.status(404).json({
@@ -157,8 +153,8 @@ export const updateLead = async (
     if (email) lead.email = email;
     if (phone) lead.phone = phone;
     if (status) lead.status = status as LeadStatus;
-    if (assignedTo !== undefined) lead.assignedTo = assignedTo;
-    if (notes !== undefined) lead.notes = notes;
+    if (assignedTo !== "") lead.assignedTo = assignedTo;
+    if (notes !== "") lead.notes = notes;
 
     const updatedLead = await lead.save();
     const populatedLead = await updatedLead.populate(

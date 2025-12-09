@@ -33,7 +33,7 @@ const LeadManagement = () => {
     email: "",
     phone: "",
     status: "New" as LeadStatus,
-    assignedTo: agents[0]?._id || "",
+    assignedTo: agents[0]._id || "",
     notes: "",
   });
 
@@ -45,7 +45,7 @@ const LeadManagement = () => {
       email: lead.email,
       phone: lead.phone,
       status: lead.status,
-      assignedTo: lead.assignedTo || "",
+      assignedTo: lead.assignedTo,
       notes: lead.notes,
     });
     setShowForm(true);
@@ -58,7 +58,7 @@ const LeadManagement = () => {
       email: "",
       phone: "",
       status: "New",
-      assignedTo: agents[0]?._id || "",
+      assignedTo: agents[0]._id || "",
       notes: "",
     });
     setShowForm(false);
@@ -66,9 +66,12 @@ const LeadManagement = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("agents from LM", agents);
+    console.log("form data from LM", formData);
+    console.log("agents[0]:", agents[0]);
+
     e.preventDefault();
     if (editingLead) {
-      console.log(editingLead);
       await updateLead(editingLead._id!, formData);
     } else {
       await addLead(formData);

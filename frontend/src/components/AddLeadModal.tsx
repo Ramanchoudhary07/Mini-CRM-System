@@ -108,7 +108,7 @@ const AddLeadModal = ({
                 Assign to Agent
               </label>
               <select
-                value={formData.assignedTo || ""}
+                value={formData.assignedTo}
                 onChange={(e) =>
                   setFormData({ ...formData, assignedTo: e.target.value })
                 }

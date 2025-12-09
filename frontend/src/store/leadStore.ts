@@ -55,7 +55,11 @@ export const useLeadStore = create<LeadStore>((set, get) => ({
 
   updateLead: async (id, lead) => {
     try {
+      console.log("lead from store", lead);
+
       const response = await axios.put(`/leads/${id}`, { lead });
+      console.log("response from store: ", response.data);
+
       const { leads } = get();
       set({
         leads: leads.map((l) => (l._id === id ? response.data.data : l)),

@@ -109,7 +109,7 @@ export const updateAgent = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const { name, email, phone } = req.body;
+    const { name, email, phone } = req.body.agent;
 
     const agent = await Agent.findById(id);
 

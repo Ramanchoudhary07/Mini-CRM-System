@@ -74,7 +74,7 @@ export const createFollowUp = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { leadId, agentId, notes, followUpDate } = req.body;
+    const { leadId, agentId, notes, followUpDate } = req.body.followup;
 
     // Validation
     if (!leadId || !agentId || !notes || !followUpDate) {
@@ -125,7 +125,7 @@ export const updateFollowUp = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const { notes, followUpDate, isCompleted } = req.body;
+    const { notes, followUpDate, isCompleted } = req.body.followup;
 
     const followUp = await FollowUp.findById(id);
 
