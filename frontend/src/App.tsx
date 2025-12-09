@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import LeadManagement from "./pages/LeadManagement";
@@ -6,6 +6,8 @@ import Analytics from "./pages/Analytics";
 import FollowUpManagement from "./pages/FollowUpManagement";
 import type { AgentType, FollowUpType, LeadType } from "./types";
 import AgentManagement from "./pages/AgentManagement";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "./lib/axios";
 
 function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -14,20 +16,16 @@ function App() {
   const [followups, setFollowups] = useState<FollowUpType[]>([]);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
 
-  const handleAddLead = (lead: LeadType) => {
-    const newId = (leads.length + 1).toString();
-    lead._id = newId;
-    const agent = agents.find((a) => a._id === lead.assignedTo);
-    if (agent) {
-      agent.totalLeads += 1;
-      if (lead.status === "Converted") {
-        agent.convertedLeads += 1;
+  const handleAddLead = async (lead: LeadType) => {
+    useEffect(() => {
+      try {
+        const res = await axios.post(`/leads`, { lead });
+        setLeads((prevLeads) => [...prevLeads, res.data.data]);
+        toast.success(res.data.message || "Lead added successfully");
+      } catch (error) {
+        toast.error("Failed to add lead");
       }
-      setAgents((prevAgents) =>
-        prevAgents.map((a) => (a._id === agent._id ? { ...agent } : a))
-      );
-    }
-    setLeads((prevLeads) => [...prevLeads, lead]);
+    }, []);
     console.log(lead);
   };
 
@@ -107,6 +105,8 @@ function App() {
           />
         )}
       </main>
+
+      <Toaster />
     </div>
   );
 }

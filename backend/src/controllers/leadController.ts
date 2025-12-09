@@ -73,7 +73,8 @@ export const createLead = async (
   next: NextFunction
 ) => {
   try {
-    const { firstName, lastName, email, phone, status, assignedTo } = req.body;
+    const { firstName, lastName, email, phone, status, assignedTo, notes } =
+      req.body;
     if (!firstName || !lastName || !email || !phone) {
       res.status(400).json({
         success: false,
@@ -97,12 +98,13 @@ export const createLead = async (
       phone,
       status: status || "New",
       assignedTo: assignedTo || null,
+      notes: notes || "",
     });
 
     const savedLead = await newLead.save();
     const populatedLead = await savedLead.populate(
       "assignedTo",
-      "name email phone"
+      "_id firstName lastName email phone status assignedTo createdAt updatedAt notes"
     );
 
     res.status(201).json({

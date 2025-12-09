@@ -9,6 +9,7 @@ export interface LeadType {
   phone: string;
   status: LeadStatus;
   assignedTo?: string;
+  notes?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
