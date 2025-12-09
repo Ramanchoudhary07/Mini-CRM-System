@@ -74,9 +74,9 @@ export const createFollowUp = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { leadId, agentId, notes, followUpDate } = req.body.followup;
+    const { leadId, agentId, notes, followUpDate, isCompleted } =
+      req.body.followup;
 
-    // Validation
     if (!leadId || !agentId || !notes || !followUpDate) {
       res.status(400).json({
         success: false,
@@ -85,7 +85,6 @@ export const createFollowUp = async (
       return;
     }
 
-    // Verify lead exists
     const lead = await Lead.findById(leadId);
     if (!lead) {
       res.status(404).json({
@@ -100,13 +99,14 @@ export const createFollowUp = async (
       agentId,
       notes,
       followUpDate: new Date(followUpDate),
-      isCompleted: false,
+      isCompleted: isCompleted || false,
     });
 
     const savedFollowUp = await newFollowUp.save();
-    const populatedFollowUp = await (
-      await savedFollowUp.populate("leadId", "firstName lastName email company")
-    ).populate("agentId", "name email phone");
+    const populatedFollowUp = await savedFollowUp.populate(
+      "leadId",
+      "_id firstName lastName email phone status"
+    );
 
     res.status(201).json({
       success: true,

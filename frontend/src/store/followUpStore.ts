@@ -43,7 +43,11 @@ export const useFollowUpStore = create<FollowUpStore>((set, get) => ({
 
   addFollowUp: async (followup) => {
     try {
+      console.log("followup in store: ", followup);
+
       const response = await axios.post("/follow-ups", { followup });
+      console.log("response: ", response.data);
+
       const { followups } = get();
       set({ followups: [...followups, response.data.data] });
       toast.success(response.data.message || "Follow-up added successfully");

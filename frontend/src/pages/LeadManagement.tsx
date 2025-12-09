@@ -1,5 +1,4 @@
 import {
-  Building2,
   Calendar,
   Edit2,
   Mail,
@@ -189,8 +188,7 @@ const LeadManagement = () => {
                     <td className="px-6 py-4">
                       <div className="text-gray-900">{lead.firstName}</div>
                       <div className="text-gray-500 text-sm flex items-center gap-1">
-                        <Building2 className="w-3 h-3" />
-                        {lead.firstName}
+                        {lead.lastName}
                       </div>
                     </td>
                     <td className="px-6 py-4">

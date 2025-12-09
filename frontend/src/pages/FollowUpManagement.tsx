@@ -16,12 +16,20 @@ const FollowUpManagement = () => {
   const leads = useLeadStore((state) => state.leads);
 
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FollowUpType>({
-    leadId: selectedLeadId || "",
-    agentId: "",
-    followUpDate: "",
-    notes: "",
-    isCompleted: false,
+  const [formData, setFormData] = useState<FollowUpType>(() => {
+    const selectedLead = leads.find((lead) => lead._id === selectedLeadId);
+    const agentId =
+      typeof selectedLead?.assignedTo === "string"
+        ? selectedLead.assignedTo
+        : (selectedLead?.assignedTo as any)?._id || "";
+
+    return {
+      leadId: selectedLeadId || "",
+      agentId: agentId,
+      followUpDate: "",
+      notes: "",
+      isCompleted: false,
+    };
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

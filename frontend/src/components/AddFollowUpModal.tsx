@@ -28,9 +28,22 @@ const AddFollowUpModal = ({
             <select
               required
               value={formData.leadId}
-              onChange={(e) =>
-                setFormData({ ...formData, leadId: e.target.value })
-              }
+              onChange={(e) => {
+                const selectedLeadId = e.target.value;
+                const selectedLead = leads.find(
+                  (lead) => lead._id === selectedLeadId
+                );
+                const agentId =
+                  typeof selectedLead?.assignedTo === "string"
+                    ? selectedLead.assignedTo
+                    : (selectedLead?.assignedTo as any)?._id || "";
+
+                setFormData({
+                  ...formData,
+                  leadId: selectedLeadId,
+                  agentId: agentId,
+                });
+              }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Choose a lead...</option>

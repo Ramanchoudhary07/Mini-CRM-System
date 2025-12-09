@@ -31,7 +31,11 @@ const FollowUpList = ({
       {followups.length > 0 ? (
         <div className="space-y-3">
           {followups.map((followUp) => {
-            const lead = leads.find((l) => l._id === followUp.leadId);
+            const leadId =
+              typeof followUp.leadId === "string"
+                ? followUp.leadId
+                : (followUp.leadId as any)?._id;
+            const lead = leads.find((l) => l._id === leadId);
             const date = new Date(followUp.followUpDate);
 
             return (
