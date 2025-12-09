@@ -2,19 +2,14 @@ import { Edit2, Mail, Phone, Plus, Trash2 } from "lucide-react";
 import type { AgentType } from "../types";
 import { useState } from "react";
 import AddAgentModal from "../components/AddAgentModal";
+import { useAgentStore } from "../store";
 
-interface AgentManagementProps {
-  agents: AgentType[];
-  onAddAgent: (agent: AgentType) => void;
-  onUpdateAgent: (id: string, agent: AgentType) => void;
-  onDeleteAgent: (id: string) => void;
-}
-const AgentManagement = ({
-  agents,
-  onAddAgent,
-  onDeleteAgent,
-  onUpdateAgent,
-}: AgentManagementProps) => {
+const AgentManagement = () => {
+  const agents = useAgentStore((state) => state.agents);
+  const addAgent = useAgentStore((state) => state.addAgent);
+  const updateAgent = useAgentStore((state) => state.updateAgent);
+  const deleteAgent = useAgentStore((state) => state.deleteAgent);
+
   const [showForm, setShowForm] = useState<boolean>(false);
   const [editingAgent, setEditingAgent] = useState<AgentType | null>(null);
   const [formData, setFormData] = useState<AgentType>({
@@ -49,12 +44,12 @@ const AgentManagement = ({
     setEditingAgent(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingAgent) {
-      onUpdateAgent(editingAgent._id!, formData);
+      await updateAgent(editingAgent._id!, formData);
     } else {
-      onAddAgent(formData);
+      await addAgent(formData);
     }
     resetForm();
   };
@@ -103,7 +98,6 @@ const AgentManagement = ({
             </thead>
             <tbody className="divide-y divide-gray-200">
               {agents.map((agent) => {
-                // const agent = agents.find((a) => a._id === lead.assignedTo);
                 return (
                   <tr key={agent._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
@@ -139,7 +133,7 @@ const AgentManagement = ({
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => onDeleteAgent(agent._id!)}
+                          onClick={() => deleteAgent(agent._id!)}
                           className="p-2 text-red-600 hover:bg-green-50 rounded-lg transition-colors"
                           title="Delete Agent"
                         >

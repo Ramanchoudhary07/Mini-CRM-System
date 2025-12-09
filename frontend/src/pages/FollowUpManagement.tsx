@@ -1,24 +1,20 @@
 import { useState } from "react";
-import type { FollowUpType, LeadType } from "../types";
+import type { FollowUpType } from "../types";
 import { Calendar, CheckCircle, Plus } from "lucide-react";
 import AddFollowUpModal from "../components/AddFollowUpModal";
 import FollowUpList from "../components/FollowUpList";
+import { useFollowUpStore, useLeadStore } from "../store";
 
-interface FollowUpManagementProps {
-  followups: FollowUpType[];
-  leads: LeadType[];
-  onAddFollowUp: (followup: FollowUpType) => void;
-  onToggleComplete: (id: string) => void;
-  selectedLeadId: string | null;
-}
+const FollowUpManagement = () => {
+  const followups = useFollowUpStore((state) => state.followups);
+  const selectedLeadId = useFollowUpStore((state) => state.selectedLeadId);
+  const addFollowUp = useFollowUpStore((state) => state.addFollowUp);
+  const toggleFollowUpComplete = useFollowUpStore(
+    (state) => state.toggleFollowUpComplete
+  );
 
-const FollowUpManagement = ({
-  followups,
-  leads,
-  onAddFollowUp,
-  onToggleComplete,
-  selectedLeadId,
-}: FollowUpManagementProps) => {
+  const leads = useLeadStore((state) => state.leads);
+
   const [showForm, setShowForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<FollowUpType>({
     leadId: selectedLeadId || "",
@@ -28,10 +24,10 @@ const FollowUpManagement = ({
     isCompleted: false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    onAddFollowUp({
+    await addFollowUp({
       leadId: formData.leadId,
       agentId: formData.agentId,
       followUpDate: new Date(formData.followUpDate).toISOString(),
@@ -89,7 +85,7 @@ const FollowUpManagement = ({
         followups={categorizedFollowUps.upcoming}
         icon={<Calendar className="w-5 h-5 text-blue-600" />}
         leads={leads}
-        onToggleComplete={onToggleComplete}
+        onToggleComplete={toggleFollowUpComplete}
         title="Upcoming"
       />
       <FollowUpList
@@ -97,7 +93,7 @@ const FollowUpManagement = ({
         followups={categorizedFollowUps.completed}
         icon={<CheckCircle className="w-5 h-5 text-green-600" />}
         leads={leads}
-        onToggleComplete={onToggleComplete}
+        onToggleComplete={toggleFollowUpComplete}
         title="Completed"
       />
     </div>

@@ -10,15 +10,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import type { AgentType, LeadType } from "../types";
+import { useLeadStore, useAgentStore } from "../store";
 
-interface AnalyticsProps {
-  leads: LeadType[];
-  agents: AgentType[];
-}
+export const Analytics = () => {
+  const leads = useLeadStore((state) => state.leads);
+  const agents = useAgentStore((state) => state.agents);
 
-export const Analytics = ({ leads, agents }: AnalyticsProps) => {
-  // Leads per agent
   const leadsPerAgent = agents.map((agent) => ({
     name: agent.name,
     total: leads.filter((l) => l.assignedTo === agent._id).length,
@@ -32,7 +29,6 @@ export const Analytics = ({ leads, agents }: AnalyticsProps) => {
       .length,
   }));
 
-  // Conversion rate per agent
   const conversionPerAgent = agents.map((agent) => {
     const agentLeads = leads.filter((l) => l.assignedTo === agent._id);
     const converted = agentLeads.filter((l) => l.status === "Converted").length;

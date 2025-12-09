@@ -8,27 +8,20 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
-import type { AgentType, LeadStatus, LeadType } from "../types";
+import type { LeadStatus, LeadType } from "../types";
 import { useState } from "react";
 import AddLeadModal from "../components/AddLeadModal";
+import { useLeadStore, useAgentStore } from "../store";
 
-interface LeadManagementProps {
-  leads: LeadType[];
-  agents: AgentType[];
-  onAddLead: (lead: LeadType) => void;
-  onUpdateLead: (_id: string, lead: LeadType) => void;
-  onOpenFollowUp: (leadId: string) => void;
-  onDeleteLead: (_id: string) => void;
-}
+const LeadManagement = () => {
+  const leads = useLeadStore((state) => state.leads);
+  const addLead = useLeadStore((state) => state.addLead);
+  const updateLead = useLeadStore((state) => state.updateLead);
+  const deleteLead = useLeadStore((state) => state.deleteLead);
+  const setSelectedLeadId = useLeadStore((state) => state.setSelectedLeadId);
 
-const LeadManagement = ({
-  leads,
-  agents,
-  onAddLead,
-  onUpdateLead,
-  onOpenFollowUp,
-  onDeleteLead,
-}: LeadManagementProps) => {
+  const agents = useAgentStore((state) => state.agents);
+
   const [showForm, setShowForm] = useState<boolean>(false);
   const [searchField, setSearchField] = useState<string>("");
   const [filterStatus, setFilterStatus] = useState<LeadStatus | "All">("All");
@@ -72,12 +65,12 @@ const LeadManagement = ({
     setEditingLead(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingLead) {
-      onUpdateLead(editingLead._id!, formData);
+      await updateLead(editingLead._id!, formData);
     } else {
-      onAddLead(formData);
+      await addLead(formData);
     }
     resetForm();
   };
@@ -205,7 +198,7 @@ const LeadManagement = ({
                       <select
                         value={lead.status}
                         onChange={(e) =>
-                          onUpdateLead(lead._id!, {
+                          updateLead(lead._id!, {
                             ...lead,
                             status: e.target.value as LeadStatus,
                           })
@@ -244,14 +237,14 @@ const LeadManagement = ({
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => onDeleteLead(lead._id!)}
+                          onClick={() => deleteLead(lead._id!)}
                           className="p-2 text-red-600 hover:bg-blue-50 rounded-lg transition-colors"
                           title="Delete lead"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => onOpenFollowUp(lead._id!)}
+                          onClick={() => setSelectedLeadId(lead._id!)}
                           className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                           title="Add follow-up"
                         >

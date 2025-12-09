@@ -1,12 +1,10 @@
 import { CheckCircle, Clock, TrendingUp, Users } from "lucide-react";
-import type { FollowUpType, LeadType } from "../types";
+import { useLeadStore, useFollowUpStore } from "../store";
 
-interface DashboardProps {
-  leads: LeadType[];
-  followups: FollowUpType[];
-}
+const Dashboard = () => {
+  const leads = useLeadStore((state) => state.leads);
+  const followups = useFollowUpStore((state) => state.followups);
 
-const Dashboard = ({ leads, followups }: DashboardProps) => {
   const totalLeads = leads.length;
   const convertedLeads = leads.filter((l) => l.status === "Converted").length;
   const conversionRate =
