@@ -9,7 +9,7 @@ interface FollowUpManagementProps {
 }
 
 const FollowUpManagement = ({}: FollowUpManagementProps) => {
-  return <div></div>;
+  return <div>Followup</div>;
 };
 
 export default FollowUpManagement;

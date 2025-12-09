@@ -5,6 +5,7 @@ import LeadManagement from "./components/LeadManagement";
 import Analytics from "./components/Analytics";
 import FollowUpManagement from "./components/FollowUpManagement";
 import type { AgentType, FollowUpType, LeadType } from "./types";
+import AgentManagement from "./components/AgentManagement";
 
 function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -14,11 +15,12 @@ function App() {
   const [selectedLeadId, setSelectedLeadId] = useState<LeadType | null>(null);
 
   const handleAddLead = (lead: LeadType) => {
+    setLeads((prevLeads) => [...prevLeads, lead]);
     console.log(lead);
   };
 
-  const handleUpdateLead = (id: string, updatedLead: LeadType) => {
-    console.log({ id, updatedLead });
+  const handleUpdateLead = (_id: string, updatedLead: LeadType) => {
+    console.log({ _id, updatedLead });
   };
 
   const handleOnOpenFollowup = (leadId: string) => {
@@ -31,6 +33,14 @@ function App() {
 
   const handleToggleComplete = (id: string) => {
     console.log(id);
+  };
+
+  const handleOnAddAgent = (agent: AgentType) => {
+    console.log(agent);
+  };
+
+  const handleOnUpdateAgent = (id: string, agent: AgentType) => {
+    console.log({ id, agent });
   };
   return (
     <div className="flex h-screen bg-gray-50">
@@ -47,6 +57,14 @@ function App() {
             onAddLead={handleAddLead}
             onUpdateLead={handleUpdateLead}
             onOpenFollowUp={handleOnOpenFollowup}
+          />
+        )}
+
+        {activeTab === "agents" && (
+          <AgentManagement
+            agents={agents}
+            onAddAgent={handleOnAddAgent}
+            onUpdateAgent={handleOnUpdateAgent}
           />
         )}
 
