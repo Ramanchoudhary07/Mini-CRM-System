@@ -15,12 +15,28 @@ function App() {
   const [selectedLeadId, setSelectedLeadId] = useState<LeadType | null>(null);
 
   const handleAddLead = (lead: LeadType) => {
+    const newId = (leads.length + 1).toString();
+    lead._id = newId;
+    const agent = agents.find((a) => a._id === lead.assignedTo);
+    if (agent) {
+      agent.totalLeads += 1;
+      if (lead.status === "Converted") {
+        agent.convertedLeads += 1;
+      }
+      setAgents((prevAgents) =>
+        prevAgents.map((a) => (a._id === agent._id ? { ...agent } : a))
+      );
+    }
     setLeads((prevLeads) => [...prevLeads, lead]);
     console.log(lead);
   };
 
   const handleUpdateLead = (_id: string, updatedLead: LeadType) => {
     console.log({ _id, updatedLead });
+  };
+
+  const handleDeleteLead = (_id: string) => {
+    console.log(_id);
   };
 
   const handleOnOpenFollowup = (leadId: string) => {
@@ -36,11 +52,18 @@ function App() {
   };
 
   const handleOnAddAgent = (agent: AgentType) => {
+    const newId = (agents.length + 1).toString();
+    agent._id = newId;
+    setAgents((prevAgents) => [...prevAgents, agent]);
     console.log(agent);
   };
 
   const handleOnUpdateAgent = (id: string, agent: AgentType) => {
     console.log({ id, agent });
+  };
+
+  const handleDeleteAgent = (id: string) => {
+    console.log(id);
   };
   return (
     <div className="flex h-screen bg-gray-50">
@@ -57,6 +80,7 @@ function App() {
             onAddLead={handleAddLead}
             onUpdateLead={handleUpdateLead}
             onOpenFollowUp={handleOnOpenFollowup}
+            onDeleteLead={handleDeleteLead}
           />
         )}
 
@@ -65,6 +89,7 @@ function App() {
             agents={agents}
             onAddAgent={handleOnAddAgent}
             onUpdateAgent={handleOnUpdateAgent}
+            onDeleteAgent={handleDeleteAgent}
           />
         )}
 

@@ -6,6 +6,7 @@ import {
   Phone,
   Plus,
   Search,
+  Trash2,
 } from "lucide-react";
 import type { AgentType, LeadStatus, LeadType } from "../types";
 import { useState } from "react";
@@ -17,6 +18,7 @@ interface LeadManagementProps {
   onAddLead: (lead: LeadType) => void;
   onUpdateLead: (_id: string, lead: LeadType) => void;
   onOpenFollowUp: (leadId: string) => void;
+  onDeleteLead: (_id: string) => void;
 }
 
 const LeadManagement = ({
@@ -25,8 +27,9 @@ const LeadManagement = ({
   onAddLead,
   onUpdateLead,
   onOpenFollowUp,
+  onDeleteLead,
 }: LeadManagementProps) => {
-  const [showFrom, setShowForm] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(false);
   const [searchField, setSearchField] = useState<string>("");
   const [filterStatus, setFilterStatus] = useState<LeadStatus | "All">("All");
   const [filterAgent, setFilterAgent] = useState<string>("All");
@@ -107,7 +110,7 @@ const LeadManagement = ({
         </button>
       </div>
 
-      {showFrom && (
+      {showForm && (
         <AddLeadModal
           editingLead={editingLead}
           formData={formData}
@@ -225,7 +228,7 @@ const LeadManagement = ({
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm">
+                        <div className="w-8 h-8 rounded-full bg-blue-400 flex items-center justify-center text-white text-sm">
                           {agent?.name.charAt(0)}
                         </div>
                         <div className="text-gray-700">{agent?.name}</div>
@@ -239,6 +242,13 @@ const LeadManagement = ({
                           title="Edit lead"
                         >
                           <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => onDeleteLead(lead._id!)}
+                          className="p-2 text-red-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Delete lead"
+                        >
+                          <Trash2 className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => onOpenFollowUp(lead._id!)}

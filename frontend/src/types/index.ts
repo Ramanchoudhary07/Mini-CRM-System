@@ -1,10 +1,12 @@
 export type LeadStatus = "New" | "Contacted" | "Converted" | "Lost";
 
 export interface AgentType {
-  _id: string;
+  _id?: string;
   name: string;
   email: string;
   phone: string;
+  totalLeads: number;
+  convertedLeads: number;
 }
 
 export interface LeadType {
