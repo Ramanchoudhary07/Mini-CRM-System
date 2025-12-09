@@ -7,7 +7,7 @@ import {
   deleteFollowUp,
   getPendingFollowUps,
   markFollowUpAsCompleted,
-} from "../controllers/followUpController.js";
+} from "../controllers/followUpController";
 
 const router = Router();
 

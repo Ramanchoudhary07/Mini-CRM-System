@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import Agent from "../models/Agent.js";
+import Agent from "../models/Agent";
 
 export const getAllAgents = async (
   req: Request,

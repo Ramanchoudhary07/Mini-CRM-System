@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import FollowUp from "../models/FollowUp.js";
-import Lead from "../models/Lead.js";
+import FollowUp from "../models/FollowUp";
+import Lead from "../models/Lead";
 
 export const getAllFollowUps = async (
   req: Request,

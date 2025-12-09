@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import Lead from "../models/Lead.js";
-import FollowUp from "../models/FollowUp.js";
+import Lead from "../models/Lead";
+import FollowUp from "../models/FollowUp";
 
 export const getAnalyticsSummary = async (
   req: Request,
@@ -65,7 +65,15 @@ export const getAllAgentsPerformance = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    let { agentId } = req.params;
+    const { agentId } = req.params;
+
+    if (!agentId) {
+      res.status(400).json({
+        success: false,
+        message: "agentId is required",
+      });
+      return;
+    }
 
     const totalLeads = await Lead.countDocuments({ assignedTo: agentId });
 
