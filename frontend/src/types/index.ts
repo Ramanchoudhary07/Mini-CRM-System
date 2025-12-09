@@ -18,6 +18,8 @@ export interface LeadType {
   status: LeadStatus;
   assignedTo?: string;
   notes: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface FollowUpType {
