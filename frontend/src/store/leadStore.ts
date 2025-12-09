@@ -68,11 +68,11 @@ export const useLeadStore = create<LeadStore>((set, get) => ({
     }
   },
 
-  deleteLead: async (id) => {
+  deleteLead: async (_id) => {
     try {
-      const response = await axios.delete(`/leads/${id}`);
+      const response = await axios.delete(`/leads/${_id}`);
       const { leads } = get();
-      set({ leads: leads.filter((l) => l._id !== id) });
+      set({ leads: leads.filter((l) => l._id !== _id) });
       toast.success(response.data.message || "Lead deleted successfully");
     } catch (error) {
       const errorMessage =

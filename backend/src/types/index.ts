@@ -1,5 +1,4 @@
 export type LeadStatus = "New" | "Contacted" | "Converted" | "Lost";
-export type AgentRole = "agent" | "admin";
 
 export interface LeadType {
   _id?: string;
@@ -19,8 +18,8 @@ export interface AgentType {
   name: string;
   email: string;
   phone: string;
-  password: string;
-  role: AgentRole;
+  totalLeads: number;
+  convertedLeads: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

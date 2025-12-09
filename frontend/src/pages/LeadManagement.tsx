@@ -68,6 +68,7 @@ const LeadManagement = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingLead) {
+      console.log(editingLead);
       await updateLead(editingLead._id!, formData);
     } else {
       await addLead(formData);

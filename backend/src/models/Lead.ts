@@ -40,6 +40,11 @@ const leadSchema = new Schema<LeadDocument>(
       ref: "Agent",
       default: null,
     },
+    notes: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   {
     timestamps: true,

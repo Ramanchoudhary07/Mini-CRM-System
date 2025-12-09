@@ -65,7 +65,7 @@ export const createAgent = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { name, email, phone } = req.body;
+    const { name, email, phone } = req.body.agent;
 
     if (!name || !email || !phone) {
       res.status(400).json({
