@@ -74,7 +74,7 @@ export const createLead = async (
 ) => {
   try {
     const { firstName, lastName, email, phone, status, assignedTo, notes } =
-      req.body;
+      req.body.lead;
     if (!firstName || !lastName || !email || !phone) {
       res.status(400).json({
         success: false,

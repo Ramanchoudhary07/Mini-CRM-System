@@ -13,7 +13,7 @@ const router = Router();
 
 router.get("/", getAllLeads);
 router.get("/:id", getLeadById);
-router.post("/:id", createLead);
+router.post("/", createLead);
 router.put("/:id", updateLead);
 router.delete("/:id", deleteLead);
 router.put("/:id/assign", assignLeadToAgent);

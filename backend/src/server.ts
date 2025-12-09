@@ -12,8 +12,15 @@ dotenv.config();
 
 const app: Express = express();
 
+const corsOptions = {
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -37,7 +44,7 @@ app.use(`${apiPrefix}/agents`, agentRoutes);
 app.use(`${apiPrefix}/analytics`, analyticsRoutes);
 app.use(`${apiPrefix}/follow-ups`, followUpRoutes);
 
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`\n${"=".repeat(50)}`);
   console.log(`✓ Server started successfully`);
