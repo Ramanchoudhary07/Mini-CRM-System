@@ -15,7 +15,7 @@ const FollowUpManagement = () => {
 
   const leads = useLeadStore((state) => state.leads);
 
-  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(selectedLeadId !== null);
   const [formData, setFormData] = useState<FollowUpType>(() => {
     const selectedLead = leads.find((lead) => lead._id === selectedLeadId);
     const agentId =

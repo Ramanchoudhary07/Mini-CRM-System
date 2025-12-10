@@ -5,13 +5,16 @@ import {
   UserCog,
   Users,
 } from "lucide-react";
+import { useSidebarStore } from "../store";
 
-interface SidebarProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
-}
+// interface SidebarProps {
+//   activeTab: string;
+//   onTabChange: (tab: string) => void;
+// }
 
-const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
+const Sidebar = () => {
+  const setActiveTab = useSidebarStore((state) => state.setActiveTab);
+  const activeTab = useSidebarStore((state) => state.activeTab);
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "leads", label: "Leads", icon: Users },
@@ -30,7 +33,7 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
           return (
             <button
               key={item.id}
-              onClick={() => onTabChange(item.id)}
+              onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition-colors ${
                 activeTab === item.id
                   ? "bg-blue-50 text-blue-600"

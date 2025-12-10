@@ -10,15 +10,22 @@ import {
 import type { LeadStatus, LeadType } from "../types";
 import { useState } from "react";
 import AddLeadModal from "../components/AddLeadModal";
-import { useLeadStore, useAgentStore } from "../store";
+import {
+  useLeadStore,
+  useAgentStore,
+  useSidebarStore,
+  useFollowUpStore,
+} from "../store";
 
 const LeadManagement = () => {
   const leads = useLeadStore((state) => state.leads);
   const addLead = useLeadStore((state) => state.addLead);
   const updateLead = useLeadStore((state) => state.updateLead);
   const deleteLead = useLeadStore((state) => state.deleteLead);
-  const setSelectedLeadId = useLeadStore((state) => state.setSelectedLeadId);
-
+  const setActiveTab = useSidebarStore((state) => state.setActiveTab);
+  const setSelectedLeadIdFollowUp = useFollowUpStore(
+    (state) => state.setSelectedLeadId
+  );
   const agents = useAgentStore((state) => state.agents);
 
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -76,7 +83,15 @@ const LeadManagement = () => {
     } else {
       await addLead(formData);
     }
+
     resetForm();
+  };
+
+  const handleOnOpenFollowup = (leadId: string) => {
+    console.log(leadId);
+
+    setSelectedLeadIdFollowUp(leadId);
+    setActiveTab("followups");
   };
 
   const filteredLeads = leads.filter((lead) => {
@@ -251,7 +266,7 @@ const LeadManagement = () => {
                           <Trash2 className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => setSelectedLeadId(lead._id!)}
+                          onClick={() => handleOnOpenFollowup(lead._id!)}
                           className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                           title="Add follow-up"
                         >
