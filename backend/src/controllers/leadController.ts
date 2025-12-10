@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Lead from "../models/Lead";
+import Agent from "../models/Agent";
 import { LeadStatus } from "../types";
 
 export const getAllLeads = async (
@@ -102,6 +103,16 @@ export const createLead = async (
     });
 
     const savedLead = await newLead.save();
+
+    // Update agent totalLeads if assignedTo is provided
+    if (assignedTo) {
+      await Agent.findByIdAndUpdate(
+        assignedTo,
+        { $inc: { totalLeads: 1 } },
+        { new: true }
+      );
+    }
+
     const populatedLead = await savedLead.populate(
       "assignedTo",
       "_id firstName lastName email phone status assignedTo createdAt updatedAt notes"
@@ -152,8 +163,72 @@ export const updateLead = async (
     if (lastName) lead.lastName = lastName;
     if (email) lead.email = email;
     if (phone) lead.phone = phone;
-    if (status) lead.status = status as LeadStatus;
-    if (assignedTo !== "") lead.assignedTo = assignedTo;
+
+    // Handle status update and convertedLeads counter
+    const oldStatus = lead.status;
+    const oldAssignedTo = lead.assignedTo;
+
+    if (status) {
+      lead.status = status as LeadStatus;
+      // Update convertedLeads for old agent if status changed to Converted
+      if (
+        oldStatus !== "Converted" &&
+        status === "Converted" &&
+        oldAssignedTo
+      ) {
+        await Agent.findByIdAndUpdate(
+          oldAssignedTo,
+          { $inc: { convertedLeads: 1 } },
+          { new: true }
+        );
+      }
+      // Decrease convertedLeads for old agent if status changed from Converted
+      if (
+        oldStatus === "Converted" &&
+        status !== "Converted" &&
+        oldAssignedTo
+      ) {
+        await Agent.findByIdAndUpdate(
+          oldAssignedTo,
+          { $inc: { convertedLeads: -1 } },
+          { new: true }
+        );
+      }
+    }
+
+    // Handle assignedTo changes
+    if (assignedTo !== "") {
+      if (assignedTo !== oldAssignedTo?.toString()) {
+        // Decrease totalLeads for old agent
+        if (oldAssignedTo) {
+          await Agent.findByIdAndUpdate(
+            oldAssignedTo,
+            {
+              $inc: {
+                totalLeads: -1,
+                convertedLeads: lead.status === "Converted" ? -1 : 0,
+              },
+            },
+            { new: true }
+          );
+        }
+        // Increase totalLeads for new agent
+        if (assignedTo) {
+          await Agent.findByIdAndUpdate(
+            assignedTo,
+            {
+              $inc: {
+                totalLeads: 1,
+                convertedLeads: lead.status === "Converted" ? 1 : 0,
+              },
+            },
+            { new: true }
+          );
+        }
+        lead.assignedTo = assignedTo;
+      }
+    }
+
     if (notes !== "") lead.notes = notes;
 
     const updatedLead = await lead.save();
@@ -188,6 +263,19 @@ export const deleteLead = async (
         error: "Lead not found",
       });
       return;
+    }
+
+    // Update agent counters when lead is deleted
+    if (lead.assignedTo) {
+      const decrement = {
+        totalLeads: -1,
+        convertedLeads: lead.status === "Converted" ? -1 : 0,
+      };
+      await Agent.findByIdAndUpdate(
+        lead.assignedTo,
+        { $inc: decrement },
+        { new: true }
+      );
     }
 
     res.status(200).json({

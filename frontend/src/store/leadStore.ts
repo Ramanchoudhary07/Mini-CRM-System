@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { LeadType } from "../types";
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
+import { useAgentStore } from "./agentStore";
 
 interface LeadStore {
   leads: LeadType[];
@@ -45,6 +46,8 @@ export const useLeadStore = create<LeadStore>((set, get) => ({
       const response = await axios.post("/leads", { lead });
       const { leads } = get();
       set({ leads: [...leads, response.data.data] });
+      // Refetch agents to update counters
+      await useAgentStore.getState().fetchAgents();
       toast.success(response.data.message || "Lead added successfully");
     } catch (error) {
       const errorMessage =
@@ -55,15 +58,13 @@ export const useLeadStore = create<LeadStore>((set, get) => ({
 
   updateLead: async (id, lead) => {
     try {
-      console.log("lead from store", lead);
-
       const response = await axios.put(`/leads/${id}`, { lead });
-      console.log("response from store: ", response.data);
-
       const { leads } = get();
       set({
         leads: leads.map((l) => (l._id === id ? response.data.data : l)),
       });
+      // Refetch agents to update counters (totalLeads, convertedLeads)
+      await useAgentStore.getState().fetchAgents();
       toast.success(response.data.message || "Lead updated successfully");
     } catch (error) {
       const errorMessage =
@@ -77,6 +78,8 @@ export const useLeadStore = create<LeadStore>((set, get) => ({
       const response = await axios.delete(`/leads/${_id}`);
       const { leads } = get();
       set({ leads: leads.filter((l) => l._id !== _id) });
+      // Refetch agents to update counters
+      await useAgentStore.getState().fetchAgents();
       toast.success(response.data.message || "Lead deleted successfully");
     } catch (error) {
       const errorMessage =

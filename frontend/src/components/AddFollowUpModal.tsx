@@ -1,3 +1,4 @@
+import { useFollowUpStore } from "../store";
 import type { FollowUpType, LeadType } from "../types";
 
 interface AddFollowUpModalProps {
@@ -15,6 +16,9 @@ const AddFollowUpModal = ({
   setFormData,
   setShowForm,
 }: AddFollowUpModalProps) => {
+  const setSelectedLeadIdFollowUp = useFollowUpStore(
+    (state) => state.setSelectedLeadId
+  );
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-lg w-full">
@@ -102,6 +106,7 @@ const AddFollowUpModal = ({
                   notes: "",
                   isCompleted: false,
                 });
+                setSelectedLeadIdFollowUp(null);
                 setShowForm(false);
               }}
               className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
