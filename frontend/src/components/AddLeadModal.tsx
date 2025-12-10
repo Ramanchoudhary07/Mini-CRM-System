@@ -38,7 +38,7 @@ const AddLeadModal = ({
                   setFormData({ ...formData, firstName: e.target.value })
                 }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter lead name"
+                placeholder="Enter first name"
               />
             </div>
 
@@ -52,7 +52,7 @@ const AddLeadModal = ({
                   setFormData({ ...formData, lastName: e.target.value })
                 }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Company name"
+                placeholder="Enter last name"
               />
             </div>
 
