@@ -34,7 +34,6 @@ const followUpSchema = new Schema<FollowUpDocument>(
   }
 );
 
-// Index for efficient querying of pending follow-ups
 followUpSchema.index({ isCompleted: 1, followUpDate: 1 });
 followUpSchema.index({ agentId: 1, followUpDate: 1 });
 

@@ -46,7 +46,6 @@ export const useLeadStore = create<LeadStore>((set, get) => ({
       const response = await axios.post("/leads", { lead });
       const { leads } = get();
       set({ leads: [...leads, response.data.data] });
-      // Refetch agents to update counters
       await useAgentStore.getState().fetchAgents();
       toast.success(response.data.message || "Lead added successfully");
     } catch (error) {
@@ -63,7 +62,6 @@ export const useLeadStore = create<LeadStore>((set, get) => ({
       set({
         leads: leads.map((l) => (l._id === id ? response.data.data : l)),
       });
-      // Refetch agents to update counters (totalLeads, convertedLeads)
       await useAgentStore.getState().fetchAgents();
       toast.success(response.data.message || "Lead updated successfully");
     } catch (error) {
@@ -78,7 +76,6 @@ export const useLeadStore = create<LeadStore>((set, get) => ({
       const response = await axios.delete(`/leads/${_id}`);
       const { leads } = get();
       set({ leads: leads.filter((l) => l._id !== _id) });
-      // Refetch agents to update counters
       await useAgentStore.getState().fetchAgents();
       toast.success(response.data.message || "Lead deleted successfully");
     } catch (error) {

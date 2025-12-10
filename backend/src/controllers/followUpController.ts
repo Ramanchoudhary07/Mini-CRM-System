@@ -137,7 +137,6 @@ export const updateFollowUp = async (
       return;
     }
 
-    // Update fields
     if (notes) followUp.notes = notes;
     if (followUpDate) followUp.followUpDate = new Date(followUpDate);
     if (isCompleted !== undefined) followUp.isCompleted = isCompleted;

@@ -7,10 +7,9 @@ const connectDB = async (): Promise<void> => {
     const mongoURI =
       process.env.MONGODB_URI || "mongodb://localhost:27017/mini-crm";
     await mongoose.connect(mongoURI);
-    console.log("✓ MongoDB connected successfully");
-    console.log(`  Connected to: ${mongoURI}`);
+    console.log("MongoDB connected successfully");
   } catch (error) {
-    console.error("✗ MongoDB connection failed:", error);
+    console.error("MongoDB connection failed:", error);
     process.exit(1);
   }
 };

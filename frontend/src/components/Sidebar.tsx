@@ -7,11 +7,6 @@ import {
 } from "lucide-react";
 import { useSidebarStore } from "../store";
 
-// interface SidebarProps {
-//   activeTab: string;
-//   onTabChange: (tab: string) => void;
-// }
-
 const Sidebar = () => {
   const setActiveTab = useSidebarStore((state) => state.setActiveTab);
   const activeTab = useSidebarStore((state) => state.activeTab);

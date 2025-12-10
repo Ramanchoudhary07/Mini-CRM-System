@@ -88,8 +88,6 @@ const LeadManagement = () => {
   };
 
   const handleOnOpenFollowup = (leadId: string) => {
-    console.log(leadId);
-
     setSelectedLeadIdFollowUp(leadId);
     setActiveTab("followups");
   };
