@@ -80,7 +80,7 @@ const AddLeadModal = ({
                   setFormData({ ...formData, phone: e.target.value })
                 }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="+1 (555) 000-0000"
+                placeholder="+91 1234567890"
               />
             </div>
 
