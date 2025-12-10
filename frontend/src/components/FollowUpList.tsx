@@ -1,4 +1,4 @@
-import { Calendar, CheckCircle, Clock } from "lucide-react";
+import { Calendar, CheckCircle, Clock, Trash2 } from "lucide-react";
 import type { FollowUpType, LeadType } from "../types";
 
 interface FollowUpListProps {
@@ -8,6 +8,7 @@ interface FollowUpListProps {
   icon: React.ReactNode;
   emptyMessage: string;
   onToggleComplete: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
 const FollowUpList = ({
@@ -17,6 +18,7 @@ const FollowUpList = ({
   title,
   leads,
   onToggleComplete,
+  onDelete,
 }: FollowUpListProps) => {
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
@@ -107,6 +109,13 @@ const FollowUpList = ({
                       </div>
                     </div>
                   </div>
+                  <button
+                    onClick={() => onDelete(followUp._id!)}
+                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Delete follow-up"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             );

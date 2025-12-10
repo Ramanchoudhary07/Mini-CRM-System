@@ -9,6 +9,7 @@ const FollowUpManagement = () => {
   const followups = useFollowUpStore((state) => state.followups);
   const selectedLeadId = useFollowUpStore((state) => state.selectedLeadId);
   const addFollowUp = useFollowUpStore((state) => state.addFollowUp);
+  const deleteFollowUp = useFollowUpStore((state) => state.deleteFollowUp);
   const toggleFollowUpComplete = useFollowUpStore(
     (state) => state.toggleFollowUpComplete
   );
@@ -94,6 +95,7 @@ const FollowUpManagement = () => {
         icon={<Calendar className="w-5 h-5 text-blue-600" />}
         leads={leads}
         onToggleComplete={toggleFollowUpComplete}
+        onDelete={deleteFollowUp}
         title="Upcoming"
       />
       <FollowUpList
@@ -102,6 +104,7 @@ const FollowUpManagement = () => {
         icon={<CheckCircle className="w-5 h-5 text-green-600" />}
         leads={leads}
         onToggleComplete={toggleFollowUpComplete}
+        onDelete={deleteFollowUp}
         title="Completed"
       />
     </div>
