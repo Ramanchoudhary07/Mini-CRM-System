@@ -1,7 +1,7 @@
 {
-  "name": "mini-crm-backend",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "Backend for Mini Lead Management CRM System",
+  "description": "",
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node src/server.ts",
