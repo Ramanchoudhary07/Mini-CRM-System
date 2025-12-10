@@ -18,23 +18,23 @@ export const Analytics = () => {
 
   const leadsPerAgent = agents.map((agent) => ({
     name: agent.name,
-    total: leads.filter((l) => l.assignedTo === agent._id).length,
-    converted: leads.filter(
-      (l) => l.assignedTo === agent._id && l.status === "Converted"
-    ).length,
-    contacted: leads.filter(
-      (l) => l.assignedTo === agent._id && l.status === "Contacted"
-    ).length,
+    total: agent.totalLeads,
+    converted: agent.convertedLeads,
+    contacted: leads.filter((l) => {
+      const agentId =
+        typeof l.assignedTo === "string"
+          ? l.assignedTo
+          : (l.assignedTo as any)?._id;
+      return agentId === agent._id && l.status === "Contacted";
+    }).length,
     new: leads.filter((l) => l.assignedTo === agent._id && l.status === "New")
       .length,
   }));
 
   const conversionPerAgent = agents.map((agent) => {
-    const agentLeads = leads.filter((l) => l.assignedTo === agent._id);
-    const converted = agentLeads.filter((l) => l.status === "Converted").length;
     const rate =
-      agentLeads.length > 0
-        ? ((converted / agentLeads.length) * 100).toFixed(1)
+      agent.totalLeads > 0
+        ? ((agent.convertedLeads / agent.totalLeads) * 100).toFixed(1)
         : "0";
     return {
       name: agent.name,
@@ -210,15 +210,12 @@ export const Analytics = () => {
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {agents.map((agent) => {
-                  const agentLeads = leads.filter(
-                    (l) => l.assignedTo === agent._id
-                  );
-                  const converted = agentLeads.filter(
-                    (l) => l.status === "Converted"
-                  ).length;
                   const rate =
-                    agentLeads.length > 0
-                      ? ((converted / agentLeads.length) * 100).toFixed(1)
+                    agent.totalLeads > 0
+                      ? (
+                          (agent.convertedLeads / agent.totalLeads) *
+                          100
+                        ).toFixed(1)
                       : "0";
 
                   return (
@@ -232,9 +229,11 @@ export const Analytics = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-gray-700">
-                        {agentLeads.length}
+                        {agent.totalLeads}
                       </td>
-                      <td className="px-6 py-4 text-gray-700">{converted}</td>
+                      <td className="px-6 py-4 text-gray-700">
+                        {agent.convertedLeads}
+                      </td>
                       <td className="px-6 py-4">
                         <span
                           className={`px-3 py-1 rounded-full text-sm ${
